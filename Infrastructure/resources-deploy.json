@@ -1,0 +1,403 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "productName": {
+            "defaultValue": "GraphQl",
+            "type": "string"
+        },
+        "productType": {
+            "defaultValue": "func",
+            "type": "string"
+        },
+        "environment": {
+            "defaultValue": "dev",
+            "type": "string"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "configurationStoreName": {
+            "defaultValue": "[concat(parameters('productName'), '-', parameters('environment'), '-', parameters('productType'), '-config')]",
+            "type": "string"
+        },
+        "keyVault": {
+            "defaultValue": "[concat(parameters('productName'), '-', parameters('environment'), '-', parameters('productType'), '-kv')]",
+            "type": "string"
+        },
+        "appInsightsName": {
+            "defaultValue": "[concat(parameters('productName'), '-', parameters('environment'), '-', parameters('productType'), '-ai')]",
+            "type": "string"
+        },
+        "functionWebJobsStorageAccountName": {
+            "defaultValue": "[toLower(concat(parameters('productName'), parameters('environment'), parameters('productType')))]",
+            "type": "string"
+        },
+        "webSiteName": {
+            "defaultValue": "[concat(parameters('productName'), '-', parameters('environment'), '-', parameters('productType'))]",
+            "type": "string"
+        },
+        "websiteContentShare": {
+            "defaultValue": "[toLower(concat(parameters('productName'), parameters('environment'), parameters('productType')))]",
+            "type": "string"
+        },
+        "project": {
+            "defaultValue": "water-data",
+            "type": "string"
+        },
+        "apiMangementIpAddress": {
+            "defaultValue": "13.75.224.27/32",
+            "type": "string"
+        },
+        "capexCostCode": {
+            "defaultValue": "P220016",
+            "type": "string"
+        },
+        "opexCostCode": {
+            "defaultValue": "P049000",
+            "type": "string"
+        }
+    },
+    "variables": {
+        "adGroups": {
+            "admin_dev": "8267c0ca-5213-44ef-9331-dd5c1f8e7faa",
+            "admin_test": "1a010094-b9e1-4bb0-ae3e-8b6386f3c93d",
+            "admin_prod": "ac4a34a6-b46b-4b09-96b2-c003cd7d8e3d"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "name": "[parameters('functionWebJobsStorageAccountName')]",
+            "location": "[parameters('location')]",
+            "tags": {
+                "environment": "[parameters('environment')]",
+                "cost-code": "[parameters('opexCostCode')]",
+                "project": "[parameters('project')]"
+            },
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Insights/components",
+            "apiVersion": "2015-05-01",
+            "name": "[parameters('appInsightsName')]",
+            "location": "[parameters('location')]",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Flow_Type": "Redfield",
+                "Request_Source": "AppServiceEnablementCreate"
+            }
+        },
+        {
+            "type": "Microsoft.AppConfiguration/configurationStores",
+            "apiVersion": "2019-11-01-preview",
+            "name": "[parameters('configurationStoreName')]",
+            "location": "[parameters('location')]",
+            "tags": {
+                "environment": "[parameters('environment')]",
+                "cost-code": "[parameters('opexCostCode')]",
+                "project": "[parameters('project')]"
+            },
+            "properties": {
+                "provisioningState": "Succeeded",
+                "creationDate": "2020-01-28T02:11:32+00:00",
+                "endpoint": "[concat('https://', parameters('configurationStoreName'), '.azconfig.io')]"
+            },
+            "sku": {
+                "name": "standard"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('webSiteName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Insights/components', parameters('appInsightsName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('functionWebJobsStorageAccountName'))]"
+            ],
+            "tags": {
+                "environment": "[parameters('environment')]",
+                "cost-code": "[parameters('capexCostCode')]",
+                "project": "[parameters('project')]"
+            },
+            "kind": "functionapp",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('webSiteName'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('webSiteName'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "AppConfig",
+                            "value": "[parameters('configurationStoreName')]"
+                        },
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference(concat('microsoft.insights/components/', parameters('appInsightsName'))).InstrumentationKey]"
+                        },
+                        {
+                            "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
+                            "value": "1.0.0"
+                        },
+                        {
+                            "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
+                            "value": "1.0.0"
+                        },
+                        {
+                            "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "AzureWebJobsDashboard",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('functionWebJobsStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionWebJobsStorageAccountName')), '2018-11-01').keys[0].value,';')]"
+                        },
+                        {
+                            "name": "DiagnosticServices_EXTENSION_VERSION",
+                            "value": "~3"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~3"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "dotnet"
+                        },
+                        {
+                            "name": "InstrumentationEngine_EXTENSION_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "KeyVault",
+                            "value": "[parameters('keyVault')]"
+                        },
+                        {
+                            "name": "SnapshotDebugger_EXTENSION_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[parameters('websiteContentShare')]"
+                        },
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "1"
+                        },
+                        {
+                            "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "XDT_MicrosoftApplicationInsights_Mode",
+                            "value": "recommended"
+                        },
+                        {
+                            "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                            "value": "[concat('InstrumentationKey=',reference(concat('microsoft.insights/components/', parameters('appInsightsName'))).InstrumentationKey)]"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('functionWebJobsStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionWebJobsStorageAccountName')), '2018-11-01').keys[0].value,';')]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('functionWebJobsStorageAccountName'),';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', parameters('functionWebJobsStorageAccountName')), '2018-11-01').keys[0].value,';')]"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "dotnetcore"
+                        }
+                    ],
+                    "siteAuthSettings": {
+                        "enabled": true,
+                        "unauthenticatedClientAction": "RedirectToLoginPage",
+                        "tokenStoreEnabled": true,
+                        "defaultProvider": "AzureActiveDirectory",
+                        "clientId": "[subscription().tenantId]",
+                        "issuer": "[concat('https://sts.windows.net/', subscription().tenantId , '/')]"
+                    }
+                },
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('webSiteName'), '/web')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('webSiteName'))]"
+            ],
+            "tags": {
+                "environment": "[parameters('environment')]",
+                "cost-code": "[parameters('capexCostCode')]",
+                "project": "[parameters('project')]"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "netFrameworkVersion": "v4.0",
+                "phpVersion": "5.6",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "[parameters('webSiteName')]",
+                "scmType": "None",
+                "use32BitWorkerProcess": false,
+                "webSocketsEnabled": false,
+                "managedPipelineMode": "Integrated",
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "[parameters('apiMangementIpAddress')]",
+                        "action": "Allow",
+                        "tag": "Default",
+                        "priority": 100,
+                        "name": "API Management"
+                    },
+                    {
+                        "ipAddress": "Any",
+                        "action": "Deny",
+                        "priority": 2147483647,
+                        "name": "Deny all",
+                        "description": "Deny all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "ftpsState": "Disabled",
+                "reservedInstanceCount": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('webSiteName'), '/', parameters('webSiteName'), '.azurewebsites.net')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('webSiteName'))]"
+            ],
+            "properties": {
+                "siteName": "[parameters('webSiteName')]",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "name": "[parameters('keyVault')]",
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2016-10-01",
+            "location": "[parameters('location')]",
+            "tags": {
+                "environment": "[parameters('environment')]",
+                "cost-code": "[parameters('opexCostCode')]",
+                "project": "[parameters('project')]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('webSiteName'))]"
+            ],
+            "properties": {
+                "enabledForDeployment": true,
+                "enabledForTemplateDeployment": true,
+                "enabledForDiskEncryption": true,
+                "tenantId": "[subscription().tenantId]",
+                "accessPolicies": [
+                    {
+                        "tenantId": "[subscription().tenantId]",
+                        "objectId": "[reference(resourceId('Microsoft.Web/sites', parameters('webSiteName')), '2019-08-01', 'Full').identity.principalId]",
+                        "permissions": {
+                            "keys": [],
+                            "secrets": [
+                                "Get"
+                            ]
+                        }
+                    },
+                    {
+                        "tenantId": "[subscription().tenantId]",
+                        "objectId": "[variables('adGroups')[concat('admin_', toLower(parameters('environment')))]]",
+                        "permissions": {
+                            "keys": [],
+                            "secrets": [
+                                "Get", "List", "Set", "Delete"
+                            ]
+                        }
+                    }
+                ],
+                "sku": {
+                    "name": "standard",
+                    "family": "A"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "webSitePrincipalId": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Web/sites', parameters('webSiteName')), '2019-08-01', 'Full').identity.principalId]"
+        }
+    }
+}

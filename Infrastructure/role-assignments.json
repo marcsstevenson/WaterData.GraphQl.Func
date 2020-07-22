@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "productName": {
+            "defaultValue": "GraphQl",
+            "type": "string"
+        },
+        "productType": {
+            "defaultValue": "func",
+            "type": "string"
+        },
+        "environment": {
+            "defaultValue": "dev",
+            "type": "string"
+        },
+        "configurationStoreName": {
+            "defaultValue": "[concat(parameters('productName'), '-', parameters('environment'), '-', parameters('productType'), '-config')]",
+            "type": "string"
+        },
+        "webSiteName": {
+            "defaultValue": "[concat(parameters('productName'), '-', parameters('environment'), '-', parameters('productType'))]",
+            "type": "string"
+        }
+    },
+    "variables": {
+        "roles": {
+            "contributor": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+            "reader": "acdd72a7-3385-48ef-bd42-f606fba81ae7",
+            "appConfigurationDataReader": "516239f1-63e1-4d78-a4de-a74fb236a071"
+        },
+        "adGroups": {
+            "admin_dev": "8267c0ca-5213-44ef-9331-dd5c1f8e7faa",
+            "admin_test": "1a010094-b9e1-4bb0-ae3e-8b6386f3c93d",
+            "admin_prod": "ac4a34a6-b46b-4b09-96b2-c003cd7d8e3d"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2018-09-01-preview",
+            "name": "[guid(resourceGroup().id)]",
+            "properties": {
+                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', variables('roles')['contributor'])]",
+                "principalId": "[variables('adGroups')[concat('admin_', toLower(parameters('environment')))]]"
+            }
+        },
+        {
+            "name": "[concat(parameters('configurationStoreName'), '/Microsoft.Authorization/', guid(uniqueString('devAccess')))]",
+            "type": "Microsoft.AppConfiguration/configurationStores/providers/roleAssignments",
+            "apiVersion": "2018-09-01-preview",
+            "properties": {
+                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', variables('roles')['appConfigurationDataReader'])]",
+                "principalId": "[variables('adGroups')[concat('admin_', toLower(parameters('environment')))]]"
+            }
+        },
+        {
+            "name": "[concat(parameters('configurationStoreName'), '/Microsoft.Authorization/', guid(uniqueString(parameters('webSiteName'))))]",
+            "type": "Microsoft.AppConfiguration/configurationStores/providers/roleAssignments",
+            "apiVersion": "2018-09-01-preview",
+            "properties": {
+                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', variables('roles')['appConfigurationDataReader'])]",
+                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webSiteName')), '2019-08-01', 'Full').identity.principalId]"
+            }
+        }
+    ]
+}

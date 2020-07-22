@@ -1,0 +1,41 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "productName": {
+            "defaultValue": "GraphQl",
+            "type": "string"
+        },
+        "productType": {
+            "defaultValue": "func",
+            "type": "string"
+        },
+        "environment": {
+            "defaultValue": "dev",
+            "type": "string"
+        },
+        "configurationStoreName": {
+            "defaultValue": "[concat(parameters('productName'), '-', parameters('environment'), '-', parameters('productType'), '-config')]",
+            "type": "string"
+        },
+        "keyVault": {
+            "defaultValue": "[concat(parameters('productName'), '-', parameters('environment'), '-', parameters('productType'), '-kv')]",
+            "type": "string"
+        },
+        "exampleSecretValue": {
+            "defaultValue": "defaultValue",
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "name": "[concat(parameters('keyVault'), '/', 'ExampleSecretName')]",
+            "apiVersion": "2019-09-01",
+            "properties": {
+                "value": "[parameters('exampleSecretValue')]",
+                "contentType": "string"
+            }
+        }
+    ]
+}

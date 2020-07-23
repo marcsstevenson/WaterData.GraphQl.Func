@@ -1,4 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using GraphQL;
+using GraphQL.Server;
+using GraphQL.Types;
+using Microsoft.Extensions.Logging;
+using WaterData.GraphQl.Application;
+using WaterData.GraphQl.Application.Types;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -14,6 +19,23 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection UseGraphQlApplication(this IServiceCollection services)
         {
             services.AddSingleton<ILogger>(BuildLogger());
+
+            services.AddSingleton<StarWarsData>();
+            services.AddSingleton<StarWarsQuery>();
+            services.AddSingleton<StarWarsMutation>();
+            services.AddSingleton<HumanType>();
+            services.AddSingleton<HumanInputType>();
+            services.AddSingleton<DroidType>();
+            services.AddSingleton<CharacterInterface>();
+            services.AddSingleton<EpisodeEnum>();
+            services.AddSingleton<ISchema, StarWarsSchema>();
+
+            // Azure Functions do not use `Microsoft.Extensions.DependencyInjection`, instead they use
+            // DryIoc - https://github.com/dadhi/DryIoc. This leads to a different behavior if multiple
+            // constructors exists so for DocumentExecuter should be called one which has no arguments.
+            // See also https://bitbucket.org/dadhi/dryioc/wiki/SelectConstructorOrFactoryMethod
+            services.AddSingleton<IDocumentExecuter>(sp => new DocumentExecuter());
+            services.AddGraphQL();
 
             return services;
         }

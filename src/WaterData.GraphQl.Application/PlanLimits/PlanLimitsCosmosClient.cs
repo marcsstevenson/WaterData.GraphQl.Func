@@ -12,8 +12,8 @@ namespace WaterData.GraphQl.Application.PlanLimits
         public async Task<int> Go(ILogger logger)
         {
             CosmosClient client = new CosmosClient(
-                accountEndpoint: "",
-                authKeyOrResourceToken: "");
+                accountEndpoint: "https://waterdata-ingest-dev-func-co.documents.azure.com:443",
+                authKeyOrResourceToken: "e2GmNV3aYiqnu4x4hTOJ4BhmSGPvUoAgbfiLe2oikeVxoGNJEObnq1q89XfVIDYJYgfTK1TiD3PuUmmNgEZvRA==");
 
             Database database = await client.CreateDatabaseIfNotExistsAsync("TeamGraph");
             Container container = await database.CreateContainerIfNotExistsAsync(
@@ -26,11 +26,11 @@ namespace WaterData.GraphQl.Application.PlanLimits
 
 
             // Query for an item
-            using (FeedIterator<dynamic> feedIterator = container.GetItemQueryIterator<dynamic>(sql))
+            using (FeedIterator<PlanLimitUnit> feedIterator = container.GetItemQueryIterator<PlanLimitUnit>(sql))
             {
                 while (feedIterator.HasMoreResults)
                 {
-                    FeedResponse<dynamic> response = await feedIterator.ReadNextAsync();
+                    FeedResponse<PlanLimitUnit> response = await feedIterator.ReadNextAsync();
                     foreach (var item in response)
                     {
                         resultCount++;

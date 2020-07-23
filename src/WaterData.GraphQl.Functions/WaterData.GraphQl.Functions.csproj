@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
 
     <PackageReference Include="GraphQL.NewtonsoftJson" Version="3.0.0-preview-1675" />
-    <PackageReference Include="GraphQL.Server.Core" Version="3.5.0-alpha0071" />
+    <PackageReference Include="GraphQL.Server.Core" Version="3.5.0-alpha0072" />
   </ItemGroup>
 
   <ItemGroup>

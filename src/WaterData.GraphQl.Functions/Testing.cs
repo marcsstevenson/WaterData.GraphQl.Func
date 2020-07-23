@@ -21,9 +21,9 @@ namespace WaterData.GraphQl.Functions
         {
             var client = new PlanLimitsCosmosClient();
 
-            var resultCount = await client.Go(logger);
+            var results = await client.GetPlanLimitUnitsAsync();
 
-            return new OkObjectResult(new { resultCount });
+            return new OkObjectResult(new { count = results.Count, results });
         }
     }
 }

@@ -3,6 +3,9 @@ using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.Extensions.Logging;
 using WaterData.GraphQl.Application;
+using WaterData.GraphQl.Application.PlanLimits;
+using WaterData.GraphQl.Application.PlanLimits.Models;
+using WaterData.GraphQl.Application.PlanLimits.Types;
 using WaterData.GraphQl.Application.Types;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -20,15 +23,20 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddSingleton<ILogger>(BuildLogger());
 
-            services.AddSingleton<StarWarsData>();
-            services.AddSingleton<StarWarsQuery>();
-            services.AddSingleton<StarWarsMutation>();
-            services.AddSingleton<HumanType>();
-            services.AddSingleton<HumanInputType>();
-            services.AddSingleton<DroidType>();
-            services.AddSingleton<CharacterInterface>();
-            services.AddSingleton<EpisodeEnum>();
-            services.AddSingleton<ISchema, StarWarsSchema>();
+            //services.AddSingleton<StarWarsData>();
+            //services.AddSingleton<StarWarsQuery>();
+            //services.AddSingleton<StarWarsMutation>();
+            //services.AddSingleton<HumanType>();
+            //services.AddSingleton<HumanInputType>();
+            //services.AddSingleton<DroidType>();
+            //services.AddSingleton<CharacterInterface>();
+            //services.AddSingleton<EpisodeEnum>();
+            //services.AddSingleton<ISchema, StarWarsSchema>();
+
+            services.AddSingleton<PlanLimitsQuery>();
+            services.AddSingleton<PlanLimitUnit>();
+            services.AddSingleton<PlanLimitUnitType>();
+            services.AddSingleton<ISchema, PlanLimitsSchema>();
 
             // Azure Functions do not use `Microsoft.Extensions.DependencyInjection`, instead they use
             // DryIoc - https://github.com/dadhi/DryIoc. This leads to a different behavior if multiple

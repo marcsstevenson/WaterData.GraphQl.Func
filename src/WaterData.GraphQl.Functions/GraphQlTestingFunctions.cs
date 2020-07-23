@@ -5,7 +5,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using GraphQL;
 using GraphQL.Types;
 using System.Threading.Tasks;
-using GraphQL.SystemTextJson;
+using GraphQL.NewtonsoftJson;
 
 namespace WaterData.GraphQl.Functions
 {
@@ -17,7 +17,7 @@ namespace WaterData.GraphQl.Functions
         /// <returns>An action result</returns>
         [FunctionName("GraphQlTesting")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req)
         {
             var schema = Schema.For(@"
               type Query {

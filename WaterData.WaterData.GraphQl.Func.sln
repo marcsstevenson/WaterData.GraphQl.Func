@@ -23,10 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterData.GraphQl.Functions
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterData.GraphQl.Application.Testing", "tests\WaterData.GraphQl.Application.Testing\WaterData.GraphQl.Application.Testing.csproj", "{1B177968-88EF-403D-83E3-3A69E526F2CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterData.GraphQl.Functions.Testing", "tests\WaterData.GraphQl.Functions.Testing\WaterData.GraphQl.Functions.Testing.csproj", "{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterData.GraphQl.Api", "WaterData.GraphQl.Api\WaterData.GraphQl.Api.csproj", "{C557503C-8A0A-409E-98E7-9D17AA491DA6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,37 +69,12 @@ Global
 		{1B177968-88EF-403D-83E3-3A69E526F2CE}.Release|x64.Build.0 = Release|Any CPU
 		{1B177968-88EF-403D-83E3-3A69E526F2CE}.Release|x86.ActiveCfg = Release|Any CPU
 		{1B177968-88EF-403D-83E3-3A69E526F2CE}.Release|x86.Build.0 = Release|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Debug|x64.Build.0 = Debug|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Debug|x86.Build.0 = Debug|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Release|x64.ActiveCfg = Release|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Release|x64.Build.0 = Release|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Release|x86.ActiveCfg = Release|Any CPU
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED}.Release|x86.Build.0 = Release|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Debug|x64.Build.0 = Debug|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Debug|x86.Build.0 = Debug|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Release|x64.ActiveCfg = Release|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Release|x64.Build.0 = Release|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Release|x86.ActiveCfg = Release|Any CPU
-		{C557503C-8A0A-409E-98E7-9D17AA491DA6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1B177968-88EF-403D-83E3-3A69E526F2CE} = {1733D06D-179C-48B9-BFFE-07DF17BAEA35}
-		{A4611AB3-3AC0-44D3-9326-74E7C17E79ED} = {1733D06D-179C-48B9-BFFE-07DF17BAEA35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4E37605C-5858-43E1-AF95-F9870C3DC28B}

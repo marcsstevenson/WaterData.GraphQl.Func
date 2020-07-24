@@ -34,6 +34,8 @@ namespace Microsoft.Extensions.DependencyInjection
             //services.AddSingleton<ISchema, StarWarsSchema>();
 
             services.AddSingleton<PlanLimitsQuery>();
+            services.AddSingleton<PlanDetail>();
+            services.AddSingleton<PlanDetailType>();
             services.AddSingleton<PlanLimitUnit>();
             services.AddSingleton<PlanLimitUnitType>();
             services.AddSingleton<ISchema, PlanLimitsSchema>();

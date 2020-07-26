@@ -8,7 +8,7 @@ namespace WaterData.GraphQl.Application.PlanLimits
 {
     public class PlanLimitsQuery : ObjectGraphType<object>
     {
-        public PlanLimitsQuery(StarWarsData data)
+        public PlanLimitsQuery()
         {
             Name = "Query";
 

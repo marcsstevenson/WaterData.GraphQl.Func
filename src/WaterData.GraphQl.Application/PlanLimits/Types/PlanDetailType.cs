@@ -5,7 +5,7 @@ namespace WaterData.GraphQl.Application.PlanLimits.Types
 {
     public class PlanDetailType : ObjectGraphType<PlanDetail>
     {
-        public PlanDetailType(PlanLimitUnit data)
+        public PlanDetailType()
         {
             Name = "PlanDetail";
             Description = "The details of a plan";

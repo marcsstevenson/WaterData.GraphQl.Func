@@ -1,7 +1,3 @@
-// <copyright file="GraphQLExecuterExtensions.cs">
-// MIT License, taken from https://github.com/tpeczek/Demo.Azure.Functions.GraphQL/blob/master/Demo.Azure.Functions.GraphQL/Infrastructure/GraphQLExecuterExtensions.cs
-// </copyright>
-// <author>https://github.com/tpeczek</author>
 using GraphQL;
 using GraphQL.NewtonsoftJson;
 using GraphQL.Server.Internal;

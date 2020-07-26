@@ -9,6 +9,6 @@
         public string[] SpatialUnits { get; set; }
 
         public PlanDetail PlanDetails { get; set; }
-        //public PlanLimit PlanLimits { get; set; }
+        public PlanLimits PlanLimits { get; set; }
     }
 }

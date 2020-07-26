@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using WaterData.GraphQl.Application.Testing.Helpers;
+using System.Linq;
 
 namespace WaterData.GraphQl.Application.Testing
 {
@@ -31,6 +32,11 @@ namespace WaterData.GraphQl.Application.Testing
             // Verify
             Assert.NotNull(exampleFixtures);
             Assert.NotEmpty(exampleFixtures);
+
+            exampleFixtures = exampleFixtures.ToList();
+
+            Assert.True(exampleFixtures.All(i => i.PlanDetails != null));
+            Assert.True(exampleFixtures.All(i => i.PlanLimits != null));
         }
     }
 }

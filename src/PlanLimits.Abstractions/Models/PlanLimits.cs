@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WaterData.GraphQl.Application.PlanLimits.Models
+namespace PlanLimits.Abstractions.Models
 {
     public class PlanLimits
     {

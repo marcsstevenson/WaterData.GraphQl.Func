@@ -1,5 +1,5 @@
 ﻿using GraphQL.Types;
-using WaterData.GraphQl.Application.PlanLimits.Models;
+using PlanLimits.Abstractions.Models;
 
 namespace WaterData.GraphQl.Application.PlanLimits.Types
 {

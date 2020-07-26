@@ -2,9 +2,11 @@
 using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.Extensions.Logging;
+using PlanLimits.Abstractions;
+using PlanLimits.Abstractions.Models;
+using PlanLimits.CosmosDataProvider;
 using WaterData.GraphQl.Application;
 using WaterData.GraphQl.Application.PlanLimits;
-using WaterData.GraphQl.Application.PlanLimits.Models;
 using WaterData.GraphQl.Application.PlanLimits.Types;
 using WaterData.GraphQl.Application.Types;
 
@@ -46,6 +48,8 @@ namespace Microsoft.Extensions.DependencyInjection
             // See also https://bitbucket.org/dadhi/dryioc/wiki/SelectConstructorOrFactoryMethod
             services.AddSingleton<IDocumentExecuter>(sp => new DocumentExecuter());
             services.AddGraphQL();
+
+            services.AddTransient<IPlanLimitsDataProvider, PlanLimitsCosmosDataProvider>();
 
             return services;
         }

@@ -1,14 +1,16 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using PlanLimits.Abstractions;
+using PlanLimits.Abstractions.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WaterData.GraphQl.Application.PlanLimits.Models;
+using Microsoft.Azure.Cosmos;
 
-namespace WaterData.GraphQl.Application.PlanLimits
+namespace PlanLimits.CosmosDataProvider
 {
     /// <summary>
-    /// The purpose of this class is to provide connectivity to a Plan Limits Cosmos database
+    /// A Plan Limits data provider from Azure Cosmos DB
     /// </summary>
-    public class PlanLimitsCosmosClient
+    public class PlanLimitsCosmosDataProvider : IPlanLimitsDataProvider
     {
         private async Task<Container> Initialise()
         {
@@ -23,6 +25,12 @@ namespace WaterData.GraphQl.Application.PlanLimits
                 400);
         }
 
+        /// <summary>
+        /// Get a list of Plan Limit Unit results for a given set of parameters
+        /// </summary>
+        /// <param name="id">The Id of the plan limit unit</param>
+        /// <param name="name">The Name of the plan limit unit</param>
+        /// <returns>A list of Plan Limit Units</returns>
         public async Task<IList<PlanLimitUnit>> GetPlanLimitUnitsAsync(string id = null, string name = null)
         {
             Container container = await Initialise();

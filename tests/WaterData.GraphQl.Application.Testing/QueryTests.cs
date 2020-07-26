@@ -19,11 +19,9 @@ namespace WaterData.GraphQl.Application.Testing
             var planLimitsSchema = new PlanLimitsSchema(services.BuildServiceProvider());
 
             // Exercise
-
             var queryResult = await planLimitsSchema.ExecuteAsync(new DocumentWriter(), _ =>
             {
-                _.Query = "{  planLimitUnit(name: \"test quality\"){ name }";
-                //_.Root = new { Hello = "Hello World!" };
+                _.Query = "{  planLimitUnit{ name } }";
             });
 
             // Verify

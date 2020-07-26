@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+using PlanLimits.Abstractions.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WaterData.GraphQl.Application.PlanLimits.Models;
 using WaterData.GraphQl.Application.Testing.Fixtures;
 
 namespace WaterData.GraphQl.Application.Testing.Helpers

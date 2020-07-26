@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WaterData.GraphQl.Application.PlanLimits.Models
+namespace PlanLimits.Abstractions.Models
 {
     public class Parameter
     {

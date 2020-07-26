@@ -1,4 +1,4 @@
-﻿namespace WaterData.GraphQl.Application.PlanLimits.Models
+﻿namespace PlanLimits.Abstractions.Models
 {
     public class PlanLimitUnit
     {

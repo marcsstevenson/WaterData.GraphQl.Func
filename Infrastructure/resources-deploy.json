@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "productName": {
-            "defaultValue": "GraphQl",
+            "defaultValue": "PlanLimits",
             "type": "string"
         },
         "productType": {

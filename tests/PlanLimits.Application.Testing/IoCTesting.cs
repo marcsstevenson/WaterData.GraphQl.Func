@@ -29,6 +29,13 @@ namespace PlanLimits.Application.Testing
 
         [Theory]
         [InlineData(typeof(Flow))]
+        [InlineData(typeof(Limit))]
+        [InlineData(typeof(Parameter))]
+        [InlineData(typeof(PlanDetail))]
+        [InlineData(typeof(PlanLimitUnit))]
+        [InlineData(typeof(PlanRestictions))]
+        [InlineData(typeof(PlanValue))]
+        [InlineData(typeof(Restriction))]
         public void TypesShallResolve(Type type)
         {
             // Setup

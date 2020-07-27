@@ -11,6 +11,6 @@ namespace PlanLimits.Abstractions.Models
         public List<string> MeasuringPoint { get; set; }
         public string Section { get; set; }
         public string PlanTable { get; set; }
-        public List<Restiction> Restictions { get; set; }
+        public List<Restriction> Restictions { get; set; }
     }
 }

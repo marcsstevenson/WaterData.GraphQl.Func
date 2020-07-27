@@ -7,10 +7,5 @@
                 "isEnabled": true
             }
         }
-    },
-    "extensions": {
-        "Swashbuckle": {
-            "XmlPath": "documentation.xml"
-        }
     }
 }

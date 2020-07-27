@@ -2,7 +2,7 @@
 
 namespace PlanLimits.Abstractions.Models
 {
-    public class PlanDetail
+    public class PlanDetail : ISingletonBootstrap
     {
         public string PlanName { get; set; }
         public string Status { get; set; }

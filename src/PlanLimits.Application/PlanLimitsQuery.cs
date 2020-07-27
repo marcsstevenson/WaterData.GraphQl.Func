@@ -1,11 +1,11 @@
 using GraphQL;
 using GraphQL.Types;
 using PlanLimits.Abstractions;
-using PlanLimits.Application.PlanLimits.Types;
+using PlanLimits.Application.Types;
 
-namespace PlanLimits.Application.PlanLimits
+namespace PlanLimits.Application
 {
-    public class PlanLimitsQuery : ObjectGraphType<object>
+    public class PlanLimitsQuery : ObjectGraphType<object>, ISingletonBootstrap
     {
         private readonly IPlanLimitsDataProvider _planLimitsDataProvider;
 
@@ -25,6 +25,7 @@ namespace PlanLimits.Application.PlanLimits
                     return _planLimitsDataProvider.GetPlanLimitUnitsAsync(context.GetArgument<string>("id"), context.GetArgument<string>("name"));
                 }
             );
+
             _planLimitsDataProvider = planLimitsDataProvider;
         }
     }

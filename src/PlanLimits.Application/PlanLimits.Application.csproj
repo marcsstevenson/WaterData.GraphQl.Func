@@ -25,6 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PlanLimits.Abstractions\PlanLimits.Abstractions.csproj" />
-    <ProjectReference Include="..\PlanLimits.CosmosData\PlanLimits.CosmosData.csproj" />
+    <ProjectReference Include="..\PlanLimits.Repository\PlanLimits.Repository.csproj" />
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlanLimits.Abstractions.Models
 {
-    public class Flow
+    public class Flow : ISingletonBootstrap
     {
         public int Rate { get; set; }
         public string Units { get; set; }

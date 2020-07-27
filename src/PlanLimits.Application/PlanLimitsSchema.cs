@@ -1,8 +1,9 @@
 using GraphQL.Types;
 using GraphQL.Utilities;
+using PlanLimits.Abstractions;
 using System;
 
-namespace PlanLimits.Application.PlanLimits
+namespace PlanLimits.Application
 {
     public class PlanLimitsSchema : Schema
     {

@@ -1,6 +1,6 @@
 ﻿namespace PlanLimits.Abstractions.Models
 {
-    public class PlanLimitUnit
+    public class PlanLimitUnit : ISingletonBootstrap
     {
         public string Id { get; set; }
         public string Name { get; set; }

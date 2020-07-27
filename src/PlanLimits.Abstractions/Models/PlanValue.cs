@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlanLimits.Abstractions.Models
 {
-    public class PlanValue
+    public class PlanValue : ISingletonBootstrap
     {
         public int FromMonth { get; set; }
         public int ToMonth { get; set; }

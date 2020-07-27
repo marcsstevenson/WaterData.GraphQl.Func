@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlanLimits.Abstractions.Models
 {
-    public class PlanRestictions
+    public class PlanRestictions : ISingletonBootstrap
     {
         public List<string> MeasuringPoint { get; set; }
         public string Section { get; set; }

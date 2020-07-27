@@ -1,7 +1,6 @@
 ﻿using Xunit;
 using PlanLimits.Application.Testing.Helpers;
 using System.Linq;
-using PlanLimits.Application.PlanLimits;
 using Microsoft.Extensions.DependencyInjection;
 using GraphQL;
 using GraphQL.Types;

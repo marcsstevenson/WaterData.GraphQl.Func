@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PlanLimits.Application.Testing.Data;
 using Xunit;
+using PlanLimits.Abstractions.Models;
 
 namespace PlanLimits.Application.Testing
 {
@@ -24,6 +25,21 @@ namespace PlanLimits.Application.Testing
             // Verify
             Assert.NotNull(planLimitsDataProvider);
             Assert.Equal(typeof(PlanLimitsInMemoryDataProvider), planLimitsDataProvider.GetType());
+        }
+
+        [Theory]
+        [InlineData(typeof(Flow))]
+        public void TypesShallResolve(Type type)
+        {
+            // Setup
+            var services = new Startup().BuildServiceCollection();
+
+            // Exercise
+            var planLimitsDataProvider = services.BuildServiceProvider().GetService(type);
+
+            // Verify
+            Assert.NotNull(planLimitsDataProvider);
+            Assert.Equal(type, planLimitsDataProvider.GetType());
         }
     }
 }

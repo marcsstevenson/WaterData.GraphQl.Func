@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlanLimits.Abstractions.Models
 {
-    public class Limit
+    public class Limit : ISingletonBootstrap
     {
         public string Name { get; set; }
         public List<string> SpatialUnits { get; set; }

@@ -2,8 +2,9 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using PlanLimits.Abstractions;
-using PlanLimits.CosmosDataProvider;
+using PlanLimits.Repository;
 using PlanLimits.Application.Testing.Data;
+using WaterData.Abstractions.Configuration;
 
 namespace PlanLimits.Application.Testing
 {
@@ -13,14 +14,23 @@ namespace PlanLimits.Application.Testing
         {
             IServiceCollection services = new ServiceCollection();
 
-            services.UseGraphQlApplication();
+            // Bootstrap the application but do not configure the database (which would cause a connection to Azure configuration)
+            services.UseGraphQlApplication(appSettingProvider: GetAppSettingProvider(), configureDatabase: false);
 
             // Replace with PlanLimitsInMemoryDataProvider
             services.Replace(new ServiceDescriptor(typeof(IPlanLimitsDataProvider), new PlanLimitsInMemoryDataProvider()));
 
-            //var test = 
-
             return services;
+        }
+
+
+        public IAppSettingProvider GetAppSettingProvider()
+        {
+            var appSettingProviderMock = new Mock<IAppSettingProvider>();
+
+            appSettingProviderMock.Setup(i => i.GetValue(It.IsAny<string>())).Returns("");
+
+            return appSettingProviderMock.Object;
         }
     }
 }

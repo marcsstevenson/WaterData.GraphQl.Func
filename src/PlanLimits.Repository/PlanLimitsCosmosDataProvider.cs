@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 
-namespace PlanLimits.CosmosDataProvider
+namespace PlanLimits.Repository
 {
     /// <summary>
     /// A Plan Limits data provider from Azure Cosmos DB

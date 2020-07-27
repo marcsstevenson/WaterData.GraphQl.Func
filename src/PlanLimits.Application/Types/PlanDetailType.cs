@@ -1,9 +1,10 @@
 ﻿using GraphQL.Types;
+using PlanLimits.Abstractions;
 using PlanLimits.Abstractions.Models;
 
-namespace PlanLimits.Application.PlanLimits.Types
+namespace PlanLimits.Application.Types
 {
-    public class PlanDetailType : ObjectGraphType<PlanDetail>
+    public class PlanDetailType : ObjectGraphType<PlanDetail>, ISingletonBootstrap
     {
         public PlanDetailType()
         {
